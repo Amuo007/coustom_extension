@@ -1,14 +1,17 @@
 {
     "manifest_version": 3,
-    "name": "Web Screenshot",
+    "name": "Web Screenshot to Claude",
     "version": "1.0",
-    "description": "Take screenshots of the current tab",
+    "description": "Take screenshots and send to Claude AI",
     "permissions": [
-      "activeTab"
+      "activeTab",
+      "storage"
+    ],
+    "host_permissions": [
+      "https://api.anthropic.com/*"
     ],
     "action": {
       "default_popup": "popup.html",
-      "default_title": "Take Screenshot"
+      "default_title": "Screenshot to Claude"
     }
-
-  }
+}

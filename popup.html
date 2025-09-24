@@ -1,10 +1,49 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Take Screenshot</title>
+    <title>Screenshot to Claude</title>
+    <style>
+      body {
+        width: 300px;
+        padding: 20px;
+        font-family: Arial, sans-serif;
+      }
+      button {
+        width: 100%;
+        padding: 10px;
+        margin: 5px 0;
+        background: #4CAF50;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+      button:hover {
+        background: #45a049;
+      }
+      #response {
+        margin-top: 10px;
+        padding: 10px;
+        background: #f0f0f0;
+        border-radius: 4px;
+        max-height: 300px;
+        overflow-y: auto;
+        font-size: 14px;
+        line-height: 1.4;
+      }
+      .loading {
+        color: #666;
+      }
+    </style>
   </head>
   <body>
-    <button id="capture">Take Screenshot</button>
+    <h3>Screenshot Analyzer</h3>
+    
+    <button id="capture">Take Screenshot & Analyze</button>
+    
+    <div id="response"></div>
+
+    
     <script src="popup.js"></script>
   </body>
 </html>
