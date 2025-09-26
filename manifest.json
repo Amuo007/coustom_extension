@@ -1,17 +1,21 @@
 {
-    "manifest_version": 3,
-    "name": "Web Screenshot to Claude",
-    "version": "1.0",
-    "description": "Take screenshots and send to Claude AI",
-    "permissions": [
-      "activeTab",
-      "storage"
-    ],
-    "host_permissions": [
-      "https://api.anthropic.com/*"
-    ],
-    "action": {
-      "default_popup": "popup.html",
-      "default_title": "Screenshot to Claude"
-    }
+  "manifest_version": 3,
+  "name": "Web Screenshot to Claude",
+  "version": "1.0",
+  "description": "Take screenshots and send to Claude AI",
+  "permissions": [
+    "activeTab",
+    "tabs",
+    "storage"
+  ],
+  "host_permissions": [
+    "https://api.anthropic.com/*"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "Screenshot to Claude"
+  }
 }
