@@ -39,7 +39,7 @@ document.getElementById("capture").addEventListener("click", async () => {
     if (res && res.success) {
       responseDiv.innerHTML = `
         <div class="success-message">
-          ✓ Screenshot sent to Claude AI!<br/>
+          ✓ Screenshot sent to OpenAI!<br/>
           Processing in background... Check history in a moment.
         </div>
       `;
@@ -60,13 +60,26 @@ document.getElementById("capture").addEventListener("click", async () => {
   }
 });
 
-// Clear all stored results
+// Clear all stored results AND reset chat memory
 document.getElementById("clearHistory").addEventListener("click", async () => {
   if (confirm("Clear all stored responses AND reset chat memory?")) {
-    await chrome.storage.local.clear();
+    // Clear display history
+    await chrome.storage.local.remove(['responses']);
+    
+    // Reset chat memory via background script
     await chrome.runtime.sendMessage({ action: "resetChat" });
+    
+    // Refresh UI
     await loadStoredResponses();
     await showChatStatus();
+    
+    // Show confirmation
+    document.getElementById("response").innerHTML = `
+      <div class="success-message">
+        ✓ History cleared and chat memory reset!<br/>
+        Ready to start a new conversation.
+      </div>
+    `;
   }
 });
 
@@ -89,11 +102,15 @@ async function showChatStatus() {
   const { chatHistory = [] } = await chrome.storage.local.get(['chatHistory']);
   const statusDiv = document.getElementById("response");
   
+  // Count only user and assistant messages (not system messages)
+  const messageCount = chatHistory.filter(msg => msg.role !== 'system').length;
+  const userMessageCount = chatHistory.filter(msg => msg.role === 'user').length;
+  
   if (chatHistory.length > 0) {
     statusDiv.innerHTML = `
       <div style="background: #e8f5e8; padding: 10px; border-radius: 4px; color: #2e7d32;">
-        💬 <strong>Chat Active:</strong> ${chatHistory.length} question(s) in memory<br/>
-        <small>Next screenshot will continue the conversation</small>
+        💬 <strong>Chat Active:</strong> ${userMessageCount} screenshot(s) analyzed<br/>
+        <small>OpenAI remembers previous screenshots in this conversation</small>
       </div>
     `;
   } else {
@@ -196,9 +213,12 @@ async function copyResponse(id, buttonElement) {
   }
 }
 
-// Auto-refresh history when storage changes
+// Auto-refresh history and status when storage changes
 chrome.storage.onChanged.addListener((changes, ns) => {
-  if (ns === "local" && changes.responses) {
-    loadStoredResponses();
+  if (ns === "local") {
+    if (changes.responses || changes.chatHistory) {
+      loadStoredResponses();
+      showChatStatus();
+    }
   }
 });

@@ -1,21 +1,21 @@
 {
   "manifest_version": 3,
-  "name": "Web Screenshot to Claude",
-  "version": "1.0",
-  "description": "Take screenshots and send to Claude AI",
+  "name": "Web Screenshot to OpenAI",
+  "version": "2.0",
+  "description": "Take screenshots and send to OpenAI GPT with chat memory",
   "permissions": [
     "activeTab",
     "tabs",
     "storage"
   ],
   "host_permissions": [
-    "https://api.anthropic.com/*"
+    "https://api.openai.com/*"
   ],
   "background": {
     "service_worker": "background.js"
   },
   "action": {
     "default_popup": "popup.html",
-    "default_title": "Screenshot to Claude"
+    "default_title": "Screenshot to OpenAI"
   }
 }
